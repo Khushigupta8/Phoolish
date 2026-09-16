@@ -1,0 +1,9 @@
+# Copy to `.dev.vars` (git-ignored) before running the admin page locally.
+# Wrangler loads this file automatically for `pnpm dev` and `pnpm start`.
+
+# Password for /admin. Pick something long.
+ADMIN_PASSWORD="change-me-before-you-open-the-shop"
+
+# Optional. Signs the admin session cookie; defaults to ADMIN_PASSWORD.
+# Set it so that changing the password does not invalidate live sessions.
+# ADMIN_SESSION_SECRET=""
