@@ -9,6 +9,14 @@ const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
 
 const { d1, r2 } = hostingConfig;
 
+// Real Cloudflare resources for `wrangler deploy`. Left blank, the build keeps
+// the placeholder identifiers, which is all local `--local` development needs.
+const resources: {
+  d1DatabaseName?: string;
+  d1DatabaseId?: string;
+  r2BucketName?: string;
+} = (hostingConfig as { resources?: Record<string, string> }).resources ?? {};
+
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const managedLinux = readExecutionProfile() === "managed-linux";
@@ -20,8 +28,9 @@ const localBindingConfig = {
     ? [
         {
           binding: d1,
-          database_name: "site-creator-d1",
-          database_id: SITE_CREATOR_PLACEHOLDER_DATABASE_ID,
+          database_name: resources.d1DatabaseName || "site-creator-d1",
+          database_id:
+            resources.d1DatabaseId || SITE_CREATOR_PLACEHOLDER_DATABASE_ID,
         },
       ]
     : [],
@@ -29,7 +38,7 @@ const localBindingConfig = {
     ? [
         {
           binding: r2,
-          bucket_name: "site-creator-r2",
+          bucket_name: resources.r2BucketName || "site-creator-r2",
         },
       ]
     : [],
