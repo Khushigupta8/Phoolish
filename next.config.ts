@@ -14,9 +14,13 @@ const argv = process.argv.join('|');
 const workersAdapter = /node_modules[\\/](vinext|vite)[\\/]/.test(argv);
 const cloudflareStub = path.resolve('./lib/cloudflare-stub.ts');
 
+// Vercel's Next.js builder only picks up the default `.next` directory, so the
+// separate output directory is a local-checkout convenience, not a deploy one.
+const onVercel = Boolean(process.env.VERCEL);
+
 const nextConfig: NextConfig = {
   // Keep standard Next output separate from the hosting adapter's generated types.
-  distDir: '.next-standard',
+  distDir: onVercel ? '.next' : '.next-standard',
   // Never stub under the adapter: that would silently disable D1 and R2.
   ...(workersAdapter
     ? {}
