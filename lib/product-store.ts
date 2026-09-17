@@ -7,30 +7,30 @@ import type { ProductInput, ProductPatch } from "./product-schema";
 let schemaReady: Promise<void> | null = null;
 
 /**
- * Creates the table on first use. D1 has no migration step in local dev, and a
- * single-table `IF NOT EXISTS` keeps `pnpm dev` working with no setup. The
- * generated migration in `drizzle/` is what you apply to a real database.
+ * Creates the table on first use, so a freshly provisioned Postgres store works
+ * with no migration step. The generated migration in `drizzle/` is the same
+ * shape, for when you would rather apply it explicitly.
  */
 function ensureSchema(): Promise<void> {
   schemaReady ??= (async () => {
-    await getDb().run(sql`
+    await getDb().execute(sql`
       CREATE TABLE IF NOT EXISTS admin_products (
-        id TEXT PRIMARY KEY NOT NULL,
-        name TEXT NOT NULL,
-        price INTEGER NOT NULL,
-        category TEXT NOT NULL,
-        image TEXT NOT NULL,
-        images TEXT NOT NULL DEFAULT '[]',
-        badge TEXT,
-        description TEXT NOT NULL,
-        material TEXT NOT NULL,
-        size TEXT NOT NULL,
-        care TEXT NOT NULL,
-        variants TEXT NOT NULL DEFAULT '[]',
-        stock INTEGER NOT NULL DEFAULT 0,
-        personalised INTEGER NOT NULL DEFAULT 0,
-        created_at TEXT NOT NULL,
-        updated_at TEXT NOT NULL
+        id text PRIMARY KEY NOT NULL,
+        name text NOT NULL,
+        price integer NOT NULL,
+        category text NOT NULL,
+        image text NOT NULL,
+        images text NOT NULL DEFAULT '[]',
+        badge text,
+        description text NOT NULL,
+        material text NOT NULL,
+        size text NOT NULL,
+        care text NOT NULL,
+        variants text NOT NULL DEFAULT '[]',
+        stock integer NOT NULL DEFAULT 0,
+        personalised integer NOT NULL DEFAULT 0,
+        created_at text NOT NULL,
+        updated_at text NOT NULL
       )
     `);
   })().catch((error) => {

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         error:
-          "ADMIN_PASSWORD is not set. Add it to `.dev.vars` locally, or to the Worker's secrets once deployed.",
+          "ADMIN_PASSWORD is not set. Add it to `.env.local` locally, or to the project's environment variables on Vercel.",
       },
       { status: 503 }
     );

@@ -1,8 +1,8 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer } from "drizzle-orm/pg-core";
 
 // Products added through the admin page. The demo catalogue in `data/products.ts`
 // stays as the read-only seed; these rows are merged on top of it at read time.
-export const adminProducts = sqliteTable("admin_products", {
+export const adminProducts = pgTable("admin_products", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   price: integer("price").notNull(),
@@ -25,7 +25,7 @@ export type AdminProductRow = typeof adminProducts.$inferSelect;
 
 // Photos for the "follow along" grid on the homepage. Uploaded through /admin;
 // `link` points at the real Instagram post when there is one.
-export const instagramPosts = sqliteTable("instagram_posts", {
+export const instagramPosts = pgTable("instagram_posts", {
   id: text("id").primaryKey(),
   image: text("image").notNull(),
   caption: text("caption"),

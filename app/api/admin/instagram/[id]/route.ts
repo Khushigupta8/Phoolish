@@ -4,7 +4,7 @@ import {
   deleteInstagramPost,
   updateInstagramPost,
 } from "@/lib/instagram-store";
-import { imageKeyFromPath } from "@/lib/image-constants";
+import { uploadedImageUrl } from "@/lib/image-constants";
 import { deleteImage } from "@/lib/images";
 
 export const dynamic = "force-dynamic";
@@ -54,10 +54,10 @@ export async function DELETE(request: Request, { params }: Context) {
     if (!removed) {
       return Response.json({ error: "No such photo." }, { status: 404 });
     }
-    const key = imageKeyFromPath(removed.image);
-    if (key) {
-      await deleteImage(key).catch((error) =>
-        console.error(`Left an orphaned image in R2: ${key}`, error)
+    const url = uploadedImageUrl(removed.image);
+    if (url) {
+      await deleteImage(url).catch((error) =>
+        console.error(`Left an orphaned image in Blob storage: ${url}`, error)
       );
     }
     return Response.json({ ok: true });

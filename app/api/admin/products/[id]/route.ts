@@ -1,7 +1,7 @@
 import { requireAdmin } from "@/lib/admin-auth";
 import { productPatch } from "@/lib/product-schema";
 import { deleteProduct, updateProduct } from "@/lib/product-store";
-import { imageKeyFromPath } from "@/lib/image-constants";
+import { uploadedImageUrl } from "@/lib/image-constants";
 import { deleteImage } from "@/lib/images";
 
 export const dynamic = "force-dynamic";
@@ -52,13 +52,13 @@ export async function DELETE(request: Request, { params }: Context) {
     }
     // Clean up the uploaded photos this product owned; seed images are shared
     // with the demo catalogue and must stay.
-    const keys = [removed.image, ...(removed.images ?? [])]
-      .map(imageKeyFromPath)
-      .filter((key): key is string => Boolean(key));
+    const urls = [removed.image, ...(removed.images ?? [])]
+      .map(uploadedImageUrl)
+      .filter((url): url is string => Boolean(url));
     await Promise.all(
-      [...new Set(keys)].map((key) =>
-        deleteImage(key).catch((error) =>
-          console.error(`Left an orphaned image in R2: ${key}`, error)
+      [...new Set(urls)].map((url) =>
+        deleteImage(url).catch((error) =>
+          console.error(`Left an orphaned image in Blob storage: ${url}`, error)
         )
       )
     );

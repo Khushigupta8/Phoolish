@@ -135,9 +135,9 @@ export function AdminApp() {
 
       {!session.storageReady && (
         <p className="admin-warning">
-          The <code>DB</code> and <code>BUCKET</code> bindings are missing, so
-          nothing can be saved. Run the site with <code>pnpm dev</code> or{" "}
-          <code>pnpm build &amp;&amp; pnpm start</code>.
+          <code>DATABASE_URL</code> or <code>BLOB_READ_WRITE_TOKEN</code> is
+          missing, so nothing can be saved. Add the Postgres and Blob stores on
+          the Vercel project&rsquo;s Storage tab, then redeploy.
         </p>
       )}
 

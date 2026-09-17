@@ -1,4 +1,4 @@
-import { hasStorageBindings } from "./bindings";
+import { hasStorageConfigured } from "./env";
 import type { InstagramPost } from "./instagram-schema";
 import { listInstagramPosts } from "./instagram-store";
 
@@ -8,7 +8,7 @@ import { listInstagramPosts } from "./instagram-store";
  * rendering an empty shell.
  */
 export async function getInstagramPosts(): Promise<InstagramPost[]> {
-  if (!hasStorageBindings()) return [];
+  if (!hasStorageConfigured()) return [];
   try {
     return await listInstagramPosts();
   } catch (error) {

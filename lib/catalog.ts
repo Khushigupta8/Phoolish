@@ -1,5 +1,5 @@
 import { products as seedProducts, type Product } from "@/data/products";
-import { hasStorageBindings } from "./bindings";
+import { hasStorageConfigured } from "./env";
 import { listAdminProducts } from "./product-store";
 
 /**
@@ -8,11 +8,11 @@ import { listAdminProducts } from "./product-store";
  * id replaces it, so the admin page can also correct a demo entry.
  *
  * Falls back to the seed alone whenever the database is unavailable — that is
- * the normal state under plain `next dev`, and it keeps the shop rendering if
- * D1 is briefly unreachable in production.
+ * the normal state before the stores are provisioned, and it keeps the shop
+ * rendering if Postgres is briefly unreachable in production.
  */
 export async function getCatalog(): Promise<Product[]> {
-  if (!hasStorageBindings()) return seedProducts;
+  if (!hasStorageConfigured()) return seedProducts;
   let uploaded: Product[] = [];
   try {
     uploaded = await listAdminProducts();

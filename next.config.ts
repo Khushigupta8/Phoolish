@@ -21,6 +21,12 @@ const onVercel = Boolean(process.env.VERCEL);
 const nextConfig: NextConfig = {
   // Keep standard Next output separate from the hosting adapter's generated types.
   distDir: onVercel ? '.next' : '.next-standard',
+  images: {
+    // Uploaded photos are served straight from Vercel Blob.
+    remotePatterns: [
+      { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
+    ],
+  },
   // Never stub under the adapter: that would silently disable D1 and R2.
   ...(workersAdapter
     ? {}

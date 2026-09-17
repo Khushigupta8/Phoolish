@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/lib/admin-auth";
-import { MAX_IMAGE_BYTES, publicImagePath } from "@/lib/image-constants";
+import { MAX_IMAGE_BYTES } from "@/lib/image-constants";
 import { putImage } from "@/lib/images";
 
 export const dynamic = "force-dynamic";
@@ -28,8 +28,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const key = await putImage(file);
-    return Response.json({ key, path: publicImagePath(key) }, { status: 201 });
+    // `path` is the public Blob URL; the admin form stores it on the product.
+    const path = await putImage(file);
+    return Response.json({ key: path, path }, { status: 201 });
   } catch (error) {
     console.error("Image upload failed.", error);
     const message = error instanceof Error ? error.message : "Image upload failed.";

@@ -11,14 +11,15 @@ let schemaReady: Promise<void> | null = null;
 
 function ensureSchema(): Promise<void> {
   schemaReady ??= (async () => {
-    await getDb().run(sql`
+    await getDb().execute(sql`
       CREATE TABLE IF NOT EXISTS instagram_posts (
-        id TEXT PRIMARY KEY NOT NULL,
-        image TEXT NOT NULL,
-        caption TEXT,
-        link TEXT,
-        position INTEGER NOT NULL DEFAULT 0,
-        created_at TEXT NOT NULL
+        id text PRIMARY KEY NOT NULL,
+        image text NOT NULL,
+        caption text,
+        link text,
+        -- "position" is a Postgres keyword, so it stays quoted here.
+        "position" integer NOT NULL DEFAULT 0,
+        created_at text NOT NULL
       )
     `);
   })().catch((error) => {

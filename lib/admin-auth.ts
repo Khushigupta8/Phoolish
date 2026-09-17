@@ -1,4 +1,4 @@
-import { readEnv } from "./bindings";
+import { readEnv } from "./env";
 
 export const ADMIN_COOKIE = "pl_admin";
 const SESSION_HOURS = 12;
@@ -26,7 +26,7 @@ function signingSecret(): string {
   const secret = readEnv("ADMIN_SESSION_SECRET") ?? readEnv("ADMIN_PASSWORD");
   if (!secret) {
     throw new Error(
-      "ADMIN_PASSWORD is not set. Add it to `.dev.vars` (local) or to the Worker's secrets (deployed)."
+      "ADMIN_PASSWORD is not set. Add it to `.env.local` (local) or to the project's environment variables on Vercel."
     );
   }
   return secret;
